@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import io
+import base64
 
 def categorize_keywords(keywords, primary_categories, secondary_categories):
     result = []
@@ -44,5 +45,3 @@ if st.button('Categorize'):
     b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
     href = f'<a href="data:file/csv;base64,{b64}" download="keywords_categories.csv">Download as CSV</a>'
     st.markdown(href, unsafe_allow_html=True)
-
-import base64
