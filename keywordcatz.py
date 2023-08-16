@@ -6,18 +6,19 @@ import base64
 def categorize_keywords(keywords, primary_categories, secondary_categories):
     result = []
     for keyword in keywords:
-        category_1 = None
-        category_2 = None
+        category_1_matches = []
+        category_2_matches = []
         
         for category in primary_categories:
             if category.lower() in keyword.lower():
-                category_1 = category
-                break
+                category_1_matches.append(category)
                 
         for category in secondary_categories:
             if category.lower() in keyword.lower():
-                category_2 = category
-                break
+                category_2_matches.append(category)
+
+        category_1 = ', '.join(category_1_matches) if category_1_matches else None
+        category_2 = ', '.join(category_2_matches) if category_2_matches else None
 
         result.append((keyword.strip(), category_1, category_2))
     return result
