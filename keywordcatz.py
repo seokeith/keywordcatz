@@ -1,7 +1,9 @@
 import streamlit as st
+import pandas as pd
+import io
 
 def categorize_keywords(keywords, primary_categories, secondary_categories):
-    result = {}
+    result = []
     for keyword in keywords:
         keyword_category = "Uncategorized"
         for category in primary_categories:
@@ -15,7 +17,7 @@ def categorize_keywords(keywords, primary_categories, secondary_categories):
                     keyword_category = category
                     break
 
-        result[keyword] = keyword_category
+        result.append((keyword.strip(), keyword_category))
     return result
 
 # Streamlit interface
@@ -32,10 +34,15 @@ secondary_categories = st.text_area('Enter the list of SECONDARY categories (com
 
 if st.button('Categorize'):
     results = categorize_keywords(keywords, primary_categories, secondary_categories)
+    df = pd.DataFrame(results, columns=["Keyword", "Category"])
     
     # Display results in table format
-    st.write('Keyword - Category')
-    st.write('------------------')
-    for keyword, category in results.items():
-        st.write(f'{keyword.strip()} - {category.strip()}')
+    st.write(df)
 
+    # Provide an option to download the DataFrame as CSV
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+    href = f'<a href="data:file/csv;base64,{b64}" download="keywords_categories.csv">Download as CSV</a>'
+    st.markdown(href, unsafe_allow_html=True)
+
+import base64
