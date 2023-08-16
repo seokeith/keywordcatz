@@ -6,19 +6,20 @@ import base64
 def categorize_keywords(keywords, primary_categories, secondary_categories):
     result = []
     for keyword in keywords:
-        keyword_category = "Uncategorized"
+        category_1 = None
+        category_2 = None
+        
         for category in primary_categories:
             if category.lower() in keyword.lower():
-                keyword_category = category
+                category_1 = category
                 break
-        
-        if keyword_category == "Uncategorized":
-            for category in secondary_categories:
-                if category.lower() in keyword.lower():
-                    keyword_category = category
-                    break
+                
+        for category in secondary_categories:
+            if category.lower() in keyword.lower():
+                category_2 = category
+                break
 
-        result.append((keyword.strip(), keyword_category))
+        result.append((keyword.strip(), category_1, category_2))
     return result
 
 # Streamlit interface
@@ -35,7 +36,7 @@ secondary_categories = st.text_area('Enter the list of SECONDARY categories (com
 
 if st.button('Categorize'):
     results = categorize_keywords(keywords, primary_categories, secondary_categories)
-    df = pd.DataFrame(results, columns=["Keyword", "Category"])
+    df = pd.DataFrame(results, columns=["Keyword", "Category 1", "Category 2"])
     
     # Display results in table format
     st.write(df)
