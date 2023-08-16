@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import io
 import base64
 
 def categorize_keywords(keywords, primary_categories, secondary_categories):
@@ -26,14 +25,14 @@ def categorize_keywords(keywords, primary_categories, secondary_categories):
 # Streamlit interface
 st.title('Keyword Categorizer')
 
-# 1. Get the list of keywords
-keywords = st.text_area('Enter the list of keywords (comma separated)').split(',')
+# Get the list of keywords
+keywords = [k.strip() for k in st.text_area('Enter the list of keywords (comma separated)').split(',')]
 
-# 2. Get the list of primary categories
-primary_categories = st.text_area('Enter the list of PRIMARY categories (comma separated)').split(',')
+# Get the list of primary categories
+primary_categories = [cat.strip() for cat in st.text_area('Enter the list of PRIMARY categories (comma separated)').split(',')]
 
-# 3. Get the list of secondary categories
-secondary_categories = st.text_area('Enter the list of SECONDARY categories (comma separated)').split(',')
+# Get the list of secondary categories
+secondary_categories = [cat.strip() for cat in st.text_area('Enter the list of SECONDARY categories (comma separated)').split(',')]
 
 if st.button('Categorize'):
     results = categorize_keywords(keywords, primary_categories, secondary_categories)
